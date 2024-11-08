@@ -80,7 +80,7 @@ while should_continue:
             for k in MENU[i]["ingredients"].keys():
                 if MENU[i]["ingredients"][k] > resources[k]:
 
-                    print(f"Sorry there is not enough {k}.")
+                    print(f"Sorry that is not enough to buy a {k}.")
                     resources_full=False
                     break
 
