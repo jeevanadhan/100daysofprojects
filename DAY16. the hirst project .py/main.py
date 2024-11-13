@@ -1,14 +1,13 @@
 from turtle import Turtle, Screen
-
+import random
 dummy=Turtle()
 dummy.shape("turtle")
 screen=Screen()
-def draw_shape(sides):
-    angle=360/sides
-    for j in range(sides):
-        dummy.forward(100)
-        dummy.right(angle)
-for i in range(3,10):
-    draw_shape(i)
-    
+dummy.width(5)
+direct=["forward(60)"]
+num=direct[0]
+dummy.num
+
+dummy.forward(100)
+
 screen.exitonclick()
