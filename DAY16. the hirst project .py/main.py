@@ -1,13 +1,21 @@
-from turtle import Turtle, Screen
+import turtle
 import random
+from turtle import Screen ,Turtle,colormode
+colormode(255)
 dummy=Turtle()
-dummy.shape("turtle")
 screen=Screen()
-dummy.width(5)
-direct=["forward(60)"]
-num=direct[0]
-dummy.num
+directions=[0,90,180,270]
+dummy.speed("fastest")
+def random_color():
+    r=random.randint(0,250)
+    g=random.randint(0,250)
+    b=random.randint(0,250)
+    tup=(r,g,b)
 
-dummy.forward(100)
-
+    return tup
+angle=5
+for i in range(72):
+    dummy.color(random_color())
+    dummy.circle(80)
+    dummy.left(angle)
 screen.exitonclick()
