@@ -1,21 +1,32 @@
 import turtle
+import colorgram
 import random
 from turtle import Screen ,Turtle,colormode
 colormode(255)
 dummy=Turtle()
 screen=Screen()
-directions=[0,90,180,270]
-dummy.speed("fastest")
-def random_color():
-    r=random.randint(0,250)
-    g=random.randint(0,250)
-    b=random.randint(0,250)
-    tup=(r,g,b)
+colors=colorgram.extract("images.jpg",20)
+color_list=[]
+for i in colors:
 
-    return tup
-angle=5
-for i in range(72):
-    dummy.color(random_color())
-    dummy.circle(80)
-    dummy.left(angle)
+    r=i.rgb.r
+    g=i.rgb.g
+    b=i.rgb.b
+    color_tuple=(r,g,b)
+    color_list.append(color_tuple)
+dummy.penup()
+dummy.hideturtle()
+def oneline():
+    for i in range(10):
+        if i<=9:
+            dummy.dot(25,random.choice(color_list))
+            dummy.forward(60)
+        else:
+            dummy.dot(25,random.choice(color_list))
+
+n=-240
+for i in range(10):
+    dummy.teleport(-280,n)
+    oneline()
+    n+=53
 screen.exitonclick()
