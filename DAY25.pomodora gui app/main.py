@@ -8,22 +8,41 @@ RED = "#e7305b"
 GREEN = "#9bdeac"
 YELLOW = "#f7f5dd"
 FONT_NAME = "Courier"
-WORK_MIN = 25
-SHORT_BREAK_MIN = 5
+WORK_MIN = 2
+SHORT_BREAK_MIN = 3
 LONG_BREAK_MIN = 20
-
+reps=0
 # ---------------------------- TIMER RESET ------------------------------- #
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
 def start_timer():
-    count_down(5*60)
+    global reps
+    reps+=1
+    if reps%8==1:
+        timer_label.config(text="WORK",fg=RED)
+        count_down(WORK_MIN*60)
+    elif reps%2==0:
+        timer_label.config(text="BREAK",fg=PINK)
+        count_down(SHORT_BREAK_MIN*60)
+    elif reps%8==0:
+        timer_label.config(text="LONG BREAK",fg=RED)
+
+        count_down(LONG_BREAK_MIN*60)
+
+    
+
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
 def count_down(count):
     count_min=math.floor(count/60)
     count_sec=count%60
+    if count_sec<10:
+        count_sec="0" + str(count_sec)
+
     canvas.itemconfig(timer_text,text=f"{count_min}:{count_sec}")
     if count>0:
-        window.after(1000,count_down,count-1)
+        window.after(5,count_down,count-1)
+    else:
+        start_timer()
 # ---------------------------- UI SETUP ------------------------------- #
 window=Tk()
 window.title("pomodoro technique")
@@ -39,7 +58,8 @@ canvas.grid(column=1,row=1)
 
 start_button=Button(text="start",highlightthickness=0,borderwidth=0,command=start_timer)
 start_button.grid(column=0,row=2)
-
+timer_label=Label(text="TIMER",fg=GREEN,bg=YELLOW,font=(FONT_NAME,20,"bold"))
+timer_label.grid(column=1,row=0)
 check_label=Label(text="✔",fg=GREEN,bg=YELLOW,font=(FONT_NAME,10,"bold"))
 check_label.grid(column=1,row=4)
 
