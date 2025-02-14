@@ -15,5 +15,6 @@ canvas=Canvas(width=200,height=224,highlightthickness=0)
 photoimage=PhotoImage(file="logo.png")
 canvas.create_image(100,112,image=photoimage)
 canvas.grid(row=0,column=1)
+.
 
 window.mainloop()
