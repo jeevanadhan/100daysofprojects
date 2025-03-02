@@ -1,13 +1,29 @@
 import requests
 import yfinance as yf
+import os
+from twilio.rest import Client
+import tkinter
 STOCK = "TSLA"
 COMPANY_NAME = "Tesla Inc"
 
-STOCK_ENDPOINT = "https://www.alphavantage.co/query"
 NEWS_ENDPOINT = "https://newsapi.org/v2/everything"
-news_api="455d69e6464e47db85d14903bb14210a"
-response=requests.get(url=f"https://newsapi.org/v2/everything?q=Tesla stock&from=2025-02-29&sortBy=popularity&apiKey={news_api}")
-data=response.json()
+
+def get_stock_news():
+    news_api="455d69e6464e47db85d14903bb14210a"
+    my_params = {
+        "q": "Tesla",
+        "language": "en",
+        "sortBy": "publishedAt",
+        "apikey": news_api
+    }
+    response=requests.get(url=f"https://newsapi.org/v2/everything",params=my_params)
+    data=response.json()
+    if data.get('articles'):# or if 'articles' in data and data["article"]
+        for articles in data["articles"][:3]:
+            title=articles["title"]
+            url=articles["url"]
+            description=articles["description"]
+            mail_stock_news(title=title,url=url,description=description)
 def get_stock_change(symbol):
     stock=yf.Ticker(symbol)
     #history
@@ -22,13 +38,27 @@ def get_stock_change(symbol):
     change=abs(day_before_closing-yesterday_closing)
     five_percent_yesterday=yesterday_closing*0.05
     if change < five_percent_yesterday:
-        print("get news")
+        print("there is 5% change in the stock\n\n collecting news")
+        print(" news")
         return True
     else:
         print("no significant change in stock prize")
         return False
 get_news=get_stock_change("TSLA")#return True or False
+def mail_stock_news(**articles):
+    account_sid = os.environ.get("ACC_SID")
+    auth_token = os.environ.get("AUTH_TOKEN")
+    my_params = {
+        "account_sid":account_sid,
+        "auth_token":auth_token
+    }
+    client=Client(account_sid,auth_token)
+    for key,value in articles.items():
+        message=client.messages.create(from_="+12525126207",to="+919361963057",body=f"SUBJECT:STOCK NEWS\n\n HEADLINE:{articles["title"]}\nBRIEF DESCRIPTION:{articles["description"]}\nURL:{articles["url"]}")
+
+
 if get_news:
+    get_stock_news()
 
 
 
